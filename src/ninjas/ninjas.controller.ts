@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -25,7 +26,11 @@ export class NinjasController {
 
   @Get(':id')
   getOneNinja(@Param('id') id: string) {
-    return this.ninjaService.getOneNinja(parseInt(id));
+    try{
+        return this.ninjaService.getOneNinja(parseInt(id));
+    }catch (err) {
+        throw new NotFoundException();
+    }
   }
 
   @Post()
