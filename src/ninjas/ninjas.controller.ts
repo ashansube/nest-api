@@ -11,40 +11,35 @@ import {
 import { query } from 'express';
 import { CreateNinjaDto } from './dto/create-ninja.dto';
 import { UpdateNinjaDto } from './dto/update-ninja.dto';
+import { NinjasService } from './ninjas.service';
 
 @Controller('ninjas')
 export class NinjasController {
+  constructor(private readonly ninjaService: NinjasService) {}
+
   @Get()
-  getNinjas(@Query('type') type: string) {
-    return [{ type }];
+  getNinjas(@Query('weapon') weapon: 'stars' | 'sword') {
+    //const service = new NinjasService();
+    return this.ninjaService.getNinjas(weapon);
   }
 
   @Get(':id')
   getOneNinja(@Param('id') id: string) {
-    return {
-      id,
-    };
+    return this.ninjaService.getOneNinja(parseInt(id));
   }
 
   @Post()
   createNinja(@Body() createNinjaDto: CreateNinjaDto) {
-    return {
-      name: createNinjaDto.name,
-    };
+    return this.ninjaService.createNinja(createNinjaDto);
   }
 
   @Put(':id')
   updateNinja(@Param('id') id: string, @Body() updateNinjaDto: UpdateNinjaDto) {
-    return {
-      id,
-      name: updateNinjaDto,
-    };
+    return this.ninjaService.updateNinja(parseInt(id), updateNinjaDto);
   }
 
   @Delete(':id')
   removeNinja(@Param('id') id: string) {
-    return {
-      id,
-    };
+    return this.ninjaService.removeNinja(parseInt(id));
   }
 }
